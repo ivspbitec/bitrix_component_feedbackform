@@ -1,73 +1,95 @@
 <?
 if(!defined("B_PROLOG_INCLUDED")||B_PROLOG_INCLUDED!==true)die();
- $this->setFrameMode(true);
+$this->setFrameMode(true);
+
+
+
 ?>
 
-<?if($arParams['USE_IN_COMPONENT']!="Y"):?>
-<div class="row">
-<?endif?>
+
+<section class="it-section __feedback __dark" >
+   <div class="container">
+
+      <p class="contact_success_box" style="-display:none;"><?=$arResult['OK_MESSAGE']?></p>
+      <p class="contact_success_box" style="-display:none;">
+      
+      <?      
+      pr($arResult['ERROR_MESSAGE'])      
+      ?>
+      </p>
+
+      <h2>
+         ОФОРМЛЕНИЕ ЗАКАЗА
+      </h2>
+      <div class="lead">
+         Пожалуйста, заполните форму и мы с вами свяжемся. 
+      </div>
+      <form class="" id="contact-form" role="form" data-toggle="validator" action="<?=POST_FORM_ACTION_URI?>" method="POST">
+         <div class="row">
+            <div class="col-md-6">
+               <div class="form-group">
+                  <input type="text" class="form-control" name="message[name]" value="<?=$arResult['MESSAGE']['NAME']?>" placeholder="<?=$arParams['NAME_HINT_TEXT']?>">
+
+               </div>
+               <div class="form-group">
+                  <input type="text" class="form-control" name="message[lname]" value="<?=$arResult['MESSAGE']['LNAME']?>"  placeholder="<?=$arParams['LNAME_HINT_TEXT']?>">      
+               </div>
+            </div>
+
+            <div class="col-md-6">
+               <div class="form-group">
+                  <input type="text" class="form-control" name="message[email]" value="<?=$arResult['MESSAGE']['EMAIL']?>"  required="true" placeholder="<?=$arParams['EMAIL_HINT_TEXT']?>">
+
+               </div>
+               <div class="form-group">
+                  <input type="text" class="form-control" name="message[phone]" value="<?=$arResult['MESSAGE']['PHONE']?>"  placeholder="<?=$arParams['PHONE_HINT_TEXT']?>">    
+               </div>
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-md-12">
+               <div class="form-group">
+                  <label><?=$arParams['MESSAGE_HINT_TITLE']?></label>
+                  <textarea  class="form-control  _message" required="true"  name="message[text]" rows="<?=$arParams['MESSAGE_HIDTH']?>"><?=$arResult['MESSAGE']['TEXT']?></textarea>
+
+               </div>
+            </div>
+         </div>
 
 
-<p class="contact_success_box" style="display:none;"><?=$arParams['OK_TEXT']?></p>
+         <div class="row">
+            <div class="col-md-6">    
+            	<? if ($arParams["USE_CAPTCHA"]=='Y'):?>
+               <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+               <div class="g-recaptcha" data-sitekey="<?=$arParams['RECAPTCHA_SITE']?>"></div>
+               
+               <? endif;?>
+            </div>
 
-<form class="form-horizontal" id="contact-form" role="form" data-toggle="validator" action="<?=POST_FORM_ACTION_URI?>" method="POST">
-<?=bitrix_sessid_post()?>
-
-<?if(in_array("NAME", $arParams["USED_FIELDS"]) or in_array("EMAIL", $arParams["USED_FIELDS"]) or in_array("PHONE", $arParams["USED_FIELDS"])):?>
-	<div class="col-md-6">
-	<?if(in_array("NAME", $arParams["USED_FIELDS"])):?>
-		<input type="text" name="names" required="" class="contact-input white-input" placeholder="<?=$arParams['NAME_HINT_TEXT']?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("NAME", $arParams["REQUIRED_FIELDS"])):?>*<?endif?>" value="<?=$arResult["AUTHOR_NAME"]?>">
-	<?endif?>
-	<?if(in_array("EMAIL", $arParams["USED_FIELDS"])):?>
-		<input class="contact-input white-input" required="" name="email" placeholder="<?=$arParams['EMAIL_HINT_TEXT']?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("EMAIL", $arParams["REQUIRED_FIELDS"])):?>*<?endif?>" type="email" value="<?=$arResult["AUTHOR_EMAIL"]?>">
-	<?endif?>
-	<?if(in_array("PHONE", $arParams["USED_FIELDS"])):?> 
-		<input class="contact-input white-input" required="" name="phone" placeholder="<?=$arParams['PHONE_HINT_TEXT']?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("PHONE", $arParams["REQUIRED_FIELDS"])):?>*<?endif?>" type="text"  value="">
-	<?endif?>
-	</div>
-<?endif?>
-
-<?if(in_array("MESSAGE", $arParams["USED_FIELDS"])):?>
-    <div class="col-md-6">
-        <textarea class="contact-commnent white-input" rows="<?=$arParams['MESSAGE_HIDTH']?>" placeholder="<?=$arParams['MESSAGE_HINT_TITLE']?><?if(empty($arParams["REQUIRED_FIELDS"]) || in_array("MESSAGE", $arParams["REQUIRED_FIELDS"])):?>*<?endif?>" name="message"></textarea>
-    </div>
-<?endif?>	
-
-	<br/>
+            <div class="col-md-6">
+               <p class='_requiredtext'>
+                 * Звездочкой обозначены графы, обязательные для заполнения.
+               </p>
+            </div>
+         </div>
 
 
+         <div class="row mt-5">
+            <div class="col-md-6">
 
-	<?if($arParams["USE_CAPTCHA"] == "Y"):?>
-		<div class="col-lg-12">
-			<div class="col-lg-6">
-				<p style="text-align: center;"><?=GetMessage("MFT_CAPTCHA_CODE")?><span class="mf-req">*</span></p>
-				<div class="col-lg-6">
-					<p style="text-align: center;"><input type="hidden" name="captcha_sid" value="<?=$arResult["capCode"]?>">
-						<img src="/bitrix/tools/captcha.php?captcha_sid=<?=$arResult["capCode"]?>" width="158" height="35" alt="CAPTCHA"></p>
-				</div>
-				<div class="col-lg-6">
-					<input class="required form-control" type="text" name="captcha_word" size="30" maxlength="50" value="">
-				</div>
-			</div>
-			<div class="col-lg-6">
-			<br/>
-				<p style="text-align:  center;">
-				<input type="hidden" name="PARAMS_HASH" value="<?=$arResult["PARAMS_HASH"]?>">
-				<input class="contact-submit" type="submit" name="submit" value="<?=$arParams['BUTTON_MESSAGE']?>" style="padding-left: 50px; padding-right: 50px;">
-				</p>
-			</div>
-		</div>
-	<?else:?>
-		
-		            <div class="col-md-12">
-				<input type="hidden" name="PARAMS_HASH" value="<?=$arResult["PARAMS_HASH"]?>">
-                    	<input value="<?=$arParams['BUTTON_MESSAGE']?>" id="submit-button" class="contact-submit" type="submit" name="submit">
-                    </div>
+            </div>
 
-	<?endif;?>
+            <div class="col-md-6">
+               <?=bitrix_sessid_post()?>
+               <input type="hidden" name="PARAMS_HASH" value="<?=$arResult["PARAMS_HASH"]?>">
+               <input value="<?=$arParams['BUTTON_MESSAGE']?>" class="btn btn-success" type="submit" name="submit">
 
-</form>
+            </div>
+         </div>
 
-<?if($arParams['USE_IN_COMPONENT']!="Y"):?>
-	</div>
-<?endif?>
+      </form>      
+
+   </div>
+</section>
+

@@ -1,24 +1,16 @@
-# 1C-Bitrix Universal site module
+# 1C-Bitrix Component Feedback Form
 Site propertys and common library module. Connfigured for every site 
-[Spbitec ltd.](http://spbitec.ru "Spbitec ltd.") 2018
+[Spbitec ltd.](http://spbitec.ru "Spbitec ltd.") 2020
 
 ### Install
-* Copy Folder **spbitec.lib** to **/local/modules/**
-* Go ro `/bitrix/admin/partner_modules.php?lang=ru` and install **spbitec.lib** module
+* Copy Folder **spbitec** to **/local/components/**
 * Find settings in `/bitrix/admin/settings.php?lang=ru&mid=spbitec.lib&mid_menu=1`
-
-For use lib Classes
-* Add to **/local/php_interface/init.php**
-`\Bitrix\Main\Loader::includeModule('spbitec.lib');`
-
-### Configure
-* Copy /config/spbitec.lib.cfg.php to /local/config/spbitec.lib.cfg.php
-* Use php array $spbitecLibCfg=[] to configure tabs and ooptions
+* Copy default template to  `/local/templates/site/components/`
 
 ### Using
-1. get Option `COption::GetOptionString('spbitec.lib', 'property1');`
-2. use lib module `\Spbitec\Lib\Iblock::iblock_property_translate();`
+1. Insert include file to your template
 
-### Classes
-- **Iblock** - Bitrix iblock translate functions
-- **CRedirector** - Redirect pages by regular expressions list in XML file 
+`<?$APPLICATION->IncludeComponent("bitrix:main.include", "", Array("AREA_FILE_SHOW" => "file","AREA_FILE_SUFFIX" => "inc","EDIT_TEMPLATE" => "","PATH" => "/include/section-feedback.php",),false);?>`
+
+2. Copy file from `\usage\section-feedback.php` to  `/include/section-feedback.php`
+3. Use Google reCapcha v2 propertys https://www.google.com/recaptcha/about/
